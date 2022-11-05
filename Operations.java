@@ -1,13 +1,21 @@
 package com.company;
 
 public class Operations {
-    public Matrix addition(Matrix A, Matrix B) {
-        int[] result = new int[A.getCols() * A.getRows()];
+    public static Matrix addition(Matrix A, Matrix B) {
+        int aCols = A.getCols();
+        int aRows = A.getRows();
+        int bCols = B.getCols();
+        int bRows = B.getRows();
 
-        if (A.getCols() == B.getCols() && A.getRows() == B.getRows()) {
+        int[] result = new int[aRows * bCols];
 
-            for (int i = 0; i < A.getCols() * A.getRows(); i++) {
-                result[i] = A.getValues()[i] + B.getValues()[i];
+        int[] avals = A.getValues();
+        int[] bvals = B.getValues();
+
+        if (aCols == bCols && aRows == bRows) {
+
+            for (int i = 0; i < result.length; i++) {
+                result[i] = avals[i] + bvals[i];
             }
         }
         else {
@@ -17,13 +25,21 @@ public class Operations {
         return new Matrix(A.getRows(), A.getCols(), result);
     }
 
-    public Matrix subtraction(Matrix A, Matrix B) {
-        int[] result = new int[A.getCols() * A.getRows()];
+    public static Matrix subtraction(Matrix A, Matrix B) {
+        int acols = A.getCols();
+        int arows = A.getRows();
+        int bcols = B.getCols();
+        int brows = B.getRows();
 
-        if (A.getCols() == B.getCols() && A.getRows() == B.getRows()) {
+        int[] result = new int[arows * bcols];
 
-            for (int i = 0; i < A.getCols() * A.getRows(); i++) {
-                result[i] = A.getValues()[i] - B.getValues()[i];
+        int[] avals = A.getValues();
+        int[] bvals = B.getValues();
+
+        if (acols == bcols && arows == brows) {
+
+            for (int i = 0; i < result.length; i++) {
+                result[i] = avals[i] - bvals[i];
             }
         }
         else {
@@ -33,18 +49,27 @@ public class Operations {
         return new Matrix(A.getRows(), A.getCols(), result);
     }
 
-    public Matrix multiplication(Matrix A, Matrix B) {
+    public static Matrix multiplication(Matrix A, Matrix B) {
         int arows = A.getRows();
         int acols = A.getCols();
         int bcols = B.getCols();
         int brows = B.getRows();
 
-        int[] result = new int[A.getRows() * B.getCols()];
+        int[] avals = A.getValues();
+        int[] bvals = B.getValues();
 
-        if (arows == bcols) {
-            for (int i = 0; i < arows; i++) {
-                for (int j = 0; j < bcols; j++) {
-                    result[i+j] = calculateValue(A, B, i, j);
+        int[] result = new int[arows * bcols];
+
+        if (acols == brows) {
+            int currindex = 0;
+            for (int arow = 0; arow < arows; arow++) {
+                for (int bcol = 0; bcol < bcols; bcol++) {
+                    int total = 0;
+                    for (int acol = 0; acol < acols; acol++) {
+                        total += bvals[acol * bcols + bcol] * avals[arow * acols + acol];
+                    }
+                    result[currindex] = total;
+                    currindex++;
                 }
             }
         }
@@ -55,7 +80,4 @@ public class Operations {
         return new Matrix(A.getRows(), B.getCols(), result);
     }
 
-    public int calculateValue(Matrix A, Matrix B, int x, int y) {
-        return 0;
-    }
 }
