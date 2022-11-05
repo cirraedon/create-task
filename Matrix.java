@@ -5,8 +5,6 @@ public class Matrix {
 
     private int[] values;
 
-    private boolean isSquare;
-
     public int getRows() {
         return rows;
     }
@@ -27,7 +25,6 @@ public class Matrix {
         this.rows = r;
         this.cols = c;
         this.values = vals;
-        this.isSquare = (rows == cols);
     }
 
     @Override
